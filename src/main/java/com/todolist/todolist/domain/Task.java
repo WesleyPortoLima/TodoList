@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.todolist.todolist.domain.enums.Status;
 
@@ -26,6 +28,24 @@ public class Task implements Serializable {
 	
 	private Status status;
 	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	public Task() {}
+
+	
+	
+	public Task(Integer id, String name, String description, LocalDate timestamp, Status status, User user) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.timestamp = timestamp;
+		this.status = status;
+		this.user = user;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -64,5 +84,13 @@ public class Task implements Serializable {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

@@ -1,11 +1,24 @@
 package com.todolist.todolist.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.todolist.todolist.domain.enums.Roles;
 
 @Entity
 public class User implements Serializable {
@@ -17,9 +30,18 @@ public class User implements Serializable {
 	
 	private String name;
 	
+	@Column(unique = true)
 	private String email;
 	
 	private String password;
+	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name = "roles")
+	private Set<Integer> roles = new HashSet<Integer>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<Task> tasks = new ArrayList<>();
 
 	public Integer getId() {
 		return id;
@@ -51,5 +73,21 @@ public class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
+	}
+	
+	public Set<Roles> getRoles() {
+		return roles.stream().map(x -> Roles.toEnum(x)).collect(Collectors.toSet());
+	}
+	
+	public void addRole(Roles role) {
+		roles.add(role.getCode());
 	}
 }
