@@ -69,4 +69,12 @@ public class TaskController {
 
 		return ResponseEntity.noContent().build();
 	} 
+	
+	@RequestMapping(value = "/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> update(
+			@PathVariable final Integer id) {
+		taskService.archiveTask(id);
+
+		return ResponseEntity.noContent().build();
+	} 
 }

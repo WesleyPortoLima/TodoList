@@ -63,15 +63,22 @@ public class TaskService {
 		return taskRepository.save(newTask);
 	}
 	
+	public Task archiveTask(Integer id) {
+		Task newTask = findById(id);
+		newTask.setStatus(Status.ARCHIVED);
+		
+		return taskRepository.save(newTask);
+	}
+	
 	public void delete(Integer id) {
 		findById(id);
 		taskRepository.deleteById(id);
 	}
 
 	private void updateData(Task task, Task newTask) {
-		newTask.setName(task.getName());
-		newTask.setDescription(task.getDescription());
-		newTask.setStatus(task.getStatus());
+		newTask.setName(task.getName() != null ? task.getName() : newTask.getName());
+		newTask.setDescription(task.getDescription() != null ? task.getDescription() : newTask.getDescription());
+		newTask.setStatus(task.getStatus() != null ? task.getStatus() : newTask.getStatus());
 	}
 	
 	public List<Task> findAllTasks(String search, Status status) {
