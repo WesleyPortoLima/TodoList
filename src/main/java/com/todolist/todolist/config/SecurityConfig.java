@@ -29,7 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired JWTUtil jwtUtil;
 	
 	private static final String[] PUBLIC_MATCHERS = {
-		"/users/*"
+		"/users/*",
+		"/auth/*"
 	};
 	
 	@Override
