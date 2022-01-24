@@ -9,6 +9,7 @@ import com.todolist.todolist.domain.enums.Roles;
 import com.todolist.todolist.repository.UserRepository;
 import com.todolist.todolist.repository.service.exception.DataIntegrityException;
 import com.todolist.todolist.repository.service.exception.ObjectNotFoundException;
+import com.todolist.todolist.security.UserSS;
 
 @Service
 public class UserService {
@@ -30,5 +31,16 @@ public class UserService {
 	public User findById(Integer id) {
 		return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException(
 				"Object not found! Id: " + id + ", Type: " + User.class.getName()));
+	}
+	
+	public boolean isAuthenticated() {
+		UserSS user = AuthenticatedUserService.authenticated();
+		
+		if (user == null) {
+			return false;
+		} else {
+			return true;
+		}
+		
 	}
 }
