@@ -42,14 +42,13 @@ public class TaskService {
 	
 	public Task save(Task task) {
 		UserSS user = AuthenticatedUserService.authenticated();
-		task.setUser(userService.findById(task.getUser().getId()));
-		if (user == null || !task.getUser().getId().equals(user.getId())) {
+		if (user == null) {
 			throw new AuthorizationException("Access Denied");
 		}
 		
+		task.setUser(userService.findById(user.getId()));
 		task.setId(null);
 		task.setTimestamp(LocalDate.now());
-		
 		
 		task = taskRepository.save(task);
 		

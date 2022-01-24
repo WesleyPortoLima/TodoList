@@ -34,8 +34,10 @@ public class TaskController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> save(@Valid @RequestBody Task task) {
+	public ResponseEntity<Void> save(@Valid @RequestBody TaskDTO dto) {
+		Task task = taskService.fromDTO(dto);
 		Task savedTask = taskService.save(task);
+		
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(savedTask.getId())
